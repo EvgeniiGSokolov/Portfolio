@@ -1,0 +1,107 @@
+<div>
+  <mat-progress-bar *ngIf="!check()" mode='indeterminate'></mat-progress-bar>
+</div>
+<div>
+<h3>ИЗМЕНЕНИЕ БАЗ ДАННЫХ</h3>
+</div>
+<br> 
+
+<div class="file-upload">
+    
+    <p><b>Введите название новой базы данных: </b><input [(ngModel)]="dbname"></p>
+    <mat-radio-group [(ngModel)]="depth"><b>Морфологический анализ</b><br>
+        <mat-radio-button *ngFor="let option of options"
+        [value]="option.short" (click)="trigger()">
+        {{option.russ}}
+        </mat-radio-button>
+    </mat-radio-group><br>
+
+    <button mat-button color="primary" class="upload-btn" [disabled]="!check()"
+      (click)="make_database();this.element='create'"> Создать базу данных
+    </button>
+    <br>
+    <div *ngIf="posted && posted.type=='db_ready' && this.element=='create'">
+        <mat-divider></mat-divider>
+        <p><b>Составлена база по следующим файлам:</b></p>
+        <button mat-button (click)="posted=null" class="small_button">Свернуть</button>
+        <div *ngFor="let entry of posted.namelist">
+            <i class="item">{{entry}}</i>
+        </div>
+</div>
+<br>
+<mat-divider></mat-divider>
+    <p><b>Выберите базу для пополнения:</b></p>
+    <mat-chip-listbox>
+        <mat-chip-option *ngFor="let name of DBnames.collection_names" (click)="DBaddend = name.name;triggertwo()">{{name.name}}</mat-chip-option>
+    </mat-chip-listbox>
+    <br>
+    <mat-radio-group [(ngModel)]="adddepth"><b>Морфологический анализ</b><br>
+        <mat-radio-button *ngFor="let option of options"
+        [value]="option.short" (click)="trigger()">
+        {{option.russ}}
+        </mat-radio-button>
+    </mat-radio-group><br>
+    
+<div class="file-upload">
+
+    <button mat-button color="primary" class="upload-btn" [disabled]="!checkOuttwo()"
+      (click)="append_database();this.element='append'"> Пополнить базу данных
+    </button>
+    <br>
+    <div *ngIf="posted && posted.type=='db_ready' && this.element=='append'">
+        <mat-divider></mat-divider>
+        <p><b>Пополнена база по следующим файлам:</b></p>
+        <button mat-button (click)="posted=null" class="small_button">Свернуть</button>
+        <div *ngFor="let entry of posted.namelist">
+            <i class="item">{{entry}}</i>
+        </div>
+
+</div>
+
+<br>
+<mat-divider></mat-divider>
+
+<p><b>Технические сведения о базах данных:</b></p>
+<mat-chip-listbox>
+    <mat-chip-option *ngFor="let name of DBnames.collection_names" (click)="DBname = name.name;trigger()">{{name.name}}</mat-chip-option>
+</mat-chip-listbox>
+<br>
+<button mat-button color="primary" class="upload-btn" [disabled]="!checkOutThree()"
+(click)="see_database()"> Получить сведения
+</button>
+<div *ngIf="dbinfo">
+    <button mat-button (click)="dbinfo=null" class="small_button">Свернуть</button>
+    <p>Число словоформ в базе: {{dbinfo.cardinality}}</p>
+    <p>Морфологическая разметка в базе: {{dbinfo.grammar}}</p>
+    <div><p>Число файлов в базе: {{dbinfo.files.length}}</p>
+        <p>Имена файлов:</p>
+        <ul>
+            <li *ngFor="let file of dbinfo.files">{{file}}</li>
+        </ul>
+    </div>
+</div>
+
+<br>
+<mat-divider></mat-divider>
+
+    <p><b>Выберите базу для удаления:</b></p>
+    <mat-chip-listbox>
+        <mat-chip-option *ngFor="let name of DBnames.collection_names" (click)="DBname = name.name;trigger()">{{name.name}}</mat-chip-option>
+    </mat-chip-listbox>
+
+<br>
+
+<div class="file-upload">
+
+    <button mat-button color="primary" class="upload-btn" [disabled]="!checkOut()"
+      (click)="drop_database();this.element='delete'"> Удалить базу данных
+    </button>
+</div>
+<br>
+<div *ngIf="posted && this.element=='delete'">
+    <mat-divider></mat-divider>
+    <p><b>{{posted.deletion}}</b></p>
+    <button mat-button (click)="posted=null" class="small_button">Свернуть</button>
+
+<br>
+<mat-divider></mat-divider>

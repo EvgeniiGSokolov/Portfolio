@@ -1,0 +1,26 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <table>
+      <tr><td><h2 [routerLink]="['/startpage']">Donatus Minor</h2></td></tr>
+    </table>
+    <table class="toLeft">
+      <tr>          
+        <td>логин:</td>
+        <td><input matInput [(ngModel)]="login" (input)="log_trigger()" value="login"></td>
+        <td>пароль:</td>
+        <td><input [(ngModel)]="password" type="password" (input)="pass_trigger()"></td>
+        <td><button class="enter" [disabled]='!this.log_button' mat-button (click)="send_userdata(login,password)">войти</button></td>
+        <td><button class="enter" [disabled]='!this.exit_button' mat-button (click)="log_out()">выйти</button></td>
+        </tr>
+    </table>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div *ngIf="userData" class="toRight">
+  <div *ngIf="userData.status=='success'">Вы вошли как {{userData.login}}</div>
+  <div *ngIf="userData.status=='aborted'">Пользователя {{userData.login}} не существует или пароль неверен</div>
+  <div *ngIf="userData.status=='loggedout'">Вы вышли из аккаунта</div>
+</div>
+
+<router-outlet></router-outlet>
+

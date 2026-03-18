@@ -1,0 +1,69 @@
+<div>
+  <mat-progress-bar *ngIf="!check()" mode='indeterminate'></mat-progress-bar>
+</div>
+<div>
+    <h3>ОПЕРАЦИИ С БАЗАМИ ДАННЫХ</h3>
+    </div>
+
+<input type="file" class="file-input"
+       (change)="onFileSelected($event)" #fileUpload multiple>
+
+<br>
+<div class="file-upload">
+
+    <button mat-button color="primary" class="upload-btn"
+      (click)="fileUpload.click()"> Загрузить файлы
+    </button>
+</div>
+
+<br> 
+
+<div class="file-upload">
+
+    <button mat-button color="primary" class="upload-btn" [disabled]="!check()"
+    [routerLink]="['/databaser']"> Изменение баз данных
+    </button>
+</div>
+
+<br>
+
+<div>
+    <button mat-button color="primary" (click)="get_filenames()" class="upload-btn">Вывести список файлов в папке</button>
+</div>
+
+<div>
+    <button mat-button (click)="remove_files()" class="deleting">Удалить файлы из текущей папки</button>
+</div>
+
+<div *ngIf="posted">
+    <div *ngIf="posted.type=='namelist'">
+        <b class="announcer">Загружены следующие файлы:</b><br>
+        <div *ngFor="let entry of posted.namelist">
+            <i class="item">{{entry}}</i>
+        </div>
+    </div>
+    <div *ngIf="posted.type=='removed_warning'">
+        <b class="announcer">Удалены следующие файлы:</b><br>
+        <div *ngFor="let entry of posted.namelist">
+            <i class="item">{{entry}}</i>
+        </div>
+    </div>
+    <div *ngIf="posted.type=='db_ready'">
+        <b class="announcer">Составлена база по следующим файлам:</b><br>
+        <div *ngFor="let entry of posted.namelist">
+            <i class="item">{{entry}}</i>
+        </div>
+    </div>
+    <div *ngIf="posted.type=='processing'">
+        <b class="announcer">В обработке файл:</b><br>
+        <div *ngFor="let entry of posted.namelist">
+            <i class="item">{{entry}}</i>
+        </div>        
+    </div>
+    <div *ngIf="posted.type=='files' && posted.namelist">
+        <b class="announcer">В хранилище содержатся файлы:</b><br>
+        <div *ngFor="let entry of posted.namelist">
+            <i class="item">{{entry}}</i>
+        </div>        
+    </div>
+</div>

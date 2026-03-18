@@ -1,0 +1,29 @@
+<div>
+    </div>
+    <h3>МЕНЮ ЛЕКСИКО-ГРАММАТИЧЕСКОГО АНАЛИЗА</h3>
+    <div>
+    <button mat-button [routerLink]="['/uploader']">
+        Операции с базами данных</button>
+    <br>
+    <button *ngIf="this.status=='success'" mat-button [routerLink]="['/word_search']">Поиск по слову</button>
+    <br>
+    <button *ngIf="this.status=='success'" mat-button [routerLink]="['/collocations']">Поиск коллокаций</button>
+    <br>
+    <button *ngIf="this.status=='success'" mat-button [routerLink]="['/ngrams']">Частотные коллокации</button>
+    <br>
+    <button *ngIf="this.status=='success'" mat-button [routerLink]="['/concordance']">Составление конкорданса</button>
+    <br>
+    <button *ngIf="this.status=='success'" mat-button [routerLink]="['/open_conc']">Готовый конкорданс</button>
+    <br>
+    <button *ngIf="this.status=='success'" mat-button [routerLink]="['/delete_conc']">Удаление конкорданса</button>
+    <br>
+    <button *ngIf="this.status=='success'" mat-button [routerLink]="['/vectorize']">Обучить векторную модель</button>
+    <br>
+    <button *ngIf="this.status=='success'" mat-button [routerLink]="['/delete_vecs']">Удалить векторную модель</button>
+    <br>
+    <button *ngIf="this.status=='success'" mat-button [routerLink]="['/vector_search']">Схожие по смыслу слова</button>
+    <br>
+    
+    <button *ngIf='this.login=="miserere_nobis"' mat-button [routerLink]="['/login']">
+        Создание аккаунта</button>
+</div>

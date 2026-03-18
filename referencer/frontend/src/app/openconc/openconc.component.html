@@ -1,0 +1,54 @@
+<div>
+    <mat-progress-bar *ngIf="!check()" mode='indeterminate'></mat-progress-bar>
+  </div>
+<h3>Открытие готового конкорданса</h3>
+<div>
+    <mat-chip-listbox>
+        <mat-chip-option *ngFor="let name of ConcNames.concordances" [value]="name.name"
+        (click)="ConcName = name.name;concord_it(ConcName)">{{name.name}}</mat-chip-option>
+    </mat-chip-listbox>
+</div>
+<div *ngIf="poster">
+        <br>
+    <mat-divider></mat-divider>
+    <div>
+        <div *ngIf="resconc">
+            Введите название конкорданса для скачивания: <input [(ngModel)]="ConcDowan" (input)="xgramtrig()"><br>
+            <button mat-button (click)="prep_concordance(DBname,ConcDowan,resconc.result)" type="pseudo_button_1" [disabled]="!checkxgramtrig()">
+                Скачать конкорданс</button>
+                <a mat-button *ngIf="postdownconc" [href]="fileUrl" (click)="down_concordance()" download="{{postdownconc.name}}.docx">Загрузить файл на компьютер</a>
+        </div>
+        <div *ngFor="let entry of resconc.result.concordance">
+            <mat-card class="inhalt">
+                <mat-card-header>
+                <button mat-button (click)="reactButton(entry)">{{entry.header}}</button>
+                </mat-card-header>
+                <mat-card-content *ngIf="entry.contents == this.contents">
+                    <button mat-button (click)="closeButton(entry)">Свернуть</button>
+                    <p><b>Абсолютная частота: {{entry.frequency}}</b></p>
+                    <p><b>Единиц на миллион: {{entry.ipm}}</b></p>
+                    <ul>
+                        <li *ngFor="let elt of entry.contents">
+                            <b>Пример:</b>
+                            <p>{{elt.raw}}</p>
+                            <b>Источник:</b>
+                            <p>{{elt.file}}</p>
+                            <button mat-button (click)="broader_context(this.act_db,elt.file, elt.sentnum)" class="small_button">Расширить контекст</button>
+                            <div *ngIf="broadcon && this.act_file == elt.file && this.act_sentnum == elt.sentnum">
+                                <button mat-button (click)="closeBroader()" class="small_button">Свернуть</button>
+                                <mat-card>
+                                    <mat-card-content>
+                                        <p><b>Расширенный контекст: </b></p>
+                                        {{broadcon.broadened}}
+                                    </mat-card-content>
+                                </mat-card>
+                                </div>
+                        <mat-divider></mat-divider>
+                        </li>
+                    </ul>
+                </mat-card-content>
+            </mat-card>
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+</div>

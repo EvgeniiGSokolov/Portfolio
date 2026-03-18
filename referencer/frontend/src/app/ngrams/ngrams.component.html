@@ -1,0 +1,101 @@
+<div>
+  <mat-progress-bar *ngIf="!check()" mode='indeterminate'></mat-progress-bar>
+</div>
+<h3>
+    ПОИСК ЧАСТОТНЫХ КОЛЛОКАЦИЙ
+</h3>
+
+<br> 
+<p><b>Выберите базу для поиска частотных коллокаций:</b></p>
+    <mat-chip-listbox>
+        <mat-chip-option *ngFor="let name of DBnames.collection_names" (click)="DBname = name.name;trigger()">{{name.name}}</mat-chip-option>
+    </mat-chip-listbox>
+<br><br>
+<table>
+    <tr>
+        <td><b>Минимальная частота коллокации: </b></td>
+        <td><input [(ngModel)]="mincount"></td>
+    </tr>
+    <br>
+    <tr>
+        <td><b>Наличие конкретного слова:</b></td>
+        <td>
+            <mat-chip-listbox>
+                <mat-chip-option (click)="particular = 'yes'">Да</mat-chip-option>
+                <mat-chip-option (click)="particular = 'no';necessary_word='DUMMY'">Нет</mat-chip-option>
+            </mat-chip-listbox>
+        </td>
+    </tr>
+    <br>
+    <tr *ngIf="particular == 'yes'">
+        <td><b>Введите это слово:</b></td>
+        <td><input [(ngModel)]="necessary_word"></td>
+        <br>
+    </tr>
+    <tr>
+        <td><b>Частотные служебные слова:</b></td>
+        <td><mat-radio-group [(ngModel)]="stopword">
+            <mat-radio-button *ngFor="let word of stopwords"
+            [value]="word.eng">
+            {{word.russ}}
+            </mat-radio-button></mat-radio-group></td>
+    </tr>
+</table>
+
+<div class="file-upload">
+
+    <button mat-button color="primary" class="upload-btn" [disabled]="!check()"
+        (click)="find_bigrams()"> Найти частотные коллокации
+    </button>
+</div>
+
+<br>
+<mat-divider></mat-divider>
+<div *ngIf="posted">
+    <mat-divider></mat-divider>
+    <div *ngIf="posted.error=='1'">
+        <b>НЕКОРРЕКТНЫЕ ДАННЫЕ. ПРОВЕРЬТЕ ЗАПОЛНЕНИЕ ПОЛЕЙ!</b>
+    </div>
+    <div *ngIf="posted.error=='0'">
+        Введите название списка для скачивания: <input [(ngModel)]="NgramName" (input)="ngramtrig()"><br>
+        <button mat-button (click)="prep_ngram()" type="pseudo_button_1" [disabled]="!checkngramtrig()">
+            Скачать список</button>
+            <a mat-button *ngIf="postgram" [href]="fileUrl" (click)="down_ngram()" download="{{postgram.name}}.docx">Загрузить файл на компьютер</a>
+        <div *ngFor="let entry of posted.set_phrases">
+            <mat-card>
+                <mat-card-header>
+                <button mat-button (click)="coll_finder(DBname,entry.frst,entry.scnd)">{{entry.frst}} {{entry.scnd}}</button>
+                </mat-card-header>
+                <mat-card-content *ngIf="postered && this.act_first == entry.frst" class="inhalt">
+                    <button mat-button (click)="closeTheButton()" class="small_button">Свернуть</button>
+                    <br>Введите название файла для скачивания: <input [(ngModel)]="NsingleName" (input)="ngramtrig()"><br>
+                    <button mat-button (click)="prep_single()" type="pseudo_button_1" [disabled]="!checkngramtrig()" class="small_button">
+                        Скачать файл</button>
+                        <a mat-button *ngIf="postsingle" [href]="fileUrl" (click)="down_single()" download="{{postsingle.name}}.docx">Загрузить файл на компьютер</a>
+                        <ul>
+                            <li *ngFor="let elt of postered.result">
+                                <mat-divider></mat-divider>
+                                        <p><b>Пример:</b></p>
+                                        <p>{{elt.raw}}</p>
+                                        <b>Источник:</b>
+                                        <p>{{elt.file}}, предложение №{{elt.sentnum}}</p>
+                                <button mat-button (click)="broader_context(DBname,elt.file, elt.sentnum)" class="small_button">
+                                    Расширить контекст</button>
+                                <div *ngIf="broada && this.act_file == elt.file && this.act_sentnum == elt.sentnum">
+                                    <button mat-button (click)="closeBroader()" class="small_button">Свернуть</button>
+                                    <mat-card>
+                                        <mat-card-content>
+                                            <p><b>Расширенный контекст: </b></p>
+                                            {{broada.broadened}}
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            <mat-divider></mat-divider><br>
+                            </li>
+                            </ul>
+                </mat-card-content>
+            </mat-card>
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+</div>

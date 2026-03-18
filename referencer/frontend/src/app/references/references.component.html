@@ -1,0 +1,44 @@
+<div>
+    <mat-progress-bar *ngIf="!check()" mode='indeterminate'></mat-progress-bar>
+  </div>
+
+<div>
+    <mat-toolbar>
+        <div>
+            Введите слово или его начальную часть: <input class="word_input" [(ngModel)] = "word">
+        </div>   
+      </mat-toolbar>
+      <mat-toolbar>
+        <div><mat-radio-group [(ngModel)]="STRICT"> Точное соответствие
+            <mat-radio-button *ngFor="let variant of truthcond" [value]="variant.eng" >
+                {{variant.rus}}
+            </mat-radio-button>
+        </mat-radio-group>  </div>
+      </mat-toolbar>
+</div>
+
+<div>
+    <button mat-button (click)="find_refs(word, STRICT)">Ссылки на слово в статьях</button>
+    <button mat-button (click)="find_substrings(word, STRICT)">Устойчивые сочетания со словом</button>
+</div>
+<mat-divider></mat-divider>
+<div *ngIf="posted">
+    <div *ngFor="let entry of posted">
+        <mat-card>
+            <mat-card-header class="word_header">
+                <button mat-button class="pseudo_button">Статья: "{{entry.headword}}" ({{entry.issue}})</button>
+            </mat-card-header>
+            <mat-card-content>
+                <ul *ngIf="entry.type=='reference'">
+                    <li class="resulter" *ngFor="let elt of entry.body">
+                        Ссылка на статью&nbsp;<b>{{elt.link}}</b>&nbsp;дана при примере&nbsp;<b>{{elt.example}}</b></li>
+                </ul>
+                <ul *ngIf="entry.type=='substrings'">
+                    <li class="resulter" *ngFor="let elt of entry.body">
+                        Пример устойчивого сочетания:&nbsp;<b>{{elt.example}}</b></li>
+                </ul>
+            </mat-card-content>
+        </mat-card>
+        <mat-divider></mat-divider>
+    </div>
+</div>

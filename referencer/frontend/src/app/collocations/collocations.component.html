@@ -1,0 +1,153 @@
+<div>
+    <mat-progress-bar *ngIf="!check()" mode='indeterminate'></mat-progress-bar>
+  </div>
+<h3>ПОИСК КОЛЛОКАЦИЙ</h3>
+<p><b>Выбрать базу данных:</b></p>
+<mat-chip-listbox [(ngModel)]="DBname">
+    <mat-chip-option *ngFor="let name of DBnames.collection_names" [value]="name.name" (click)="DBname = name.name">{{name.name}}</mat-chip-option>
+</mat-chip-listbox>
+<br>
+
+<mat-radio-group [(ngModel)]="n_gram">
+    <b>Размер коллокации:</b>
+    <mat-radio-button *ngFor="let length of n_length" [value]="length.length">{{length.russ}}</mat-radio-button>
+</mat-radio-group>
+<div *ngIf="n_gram == '2'">
+    <p>
+        Первое слово: <input [(ngModel)]="word_1">
+    </p>
+    <mat-radio-group [(ngModel)]="lemOrTok_1">Тип первого слова: 
+        <mat-radio-button *ngFor="let typ of entry_types" [value]="typ.eng">{{typ.russ}}</mat-radio-button>
+    </mat-radio-group>
+    <p>
+        Второе слово: <input [(ngModel)]="word_2">
+    </p>
+    <mat-radio-group [(ngModel)]="lemOrTok_2">Тип второго слова: 
+        <mat-radio-button *ngFor="let typ of entry_types" [value]="typ.eng">{{typ.russ}}</mat-radio-button>
+    </mat-radio-group>
+    <p>
+        Словоформ между словами от <input [(ngModel)]="mini_1"> до <input [(ngModel)]="maxi_1">
+    </p>
+</div>
+<div *ngIf="n_gram == '3'">
+    <p>
+        Первое слово: <input [(ngModel)]="word_1">
+    </p>
+    <mat-radio-group [(ngModel)]="lemOrTok_1">Тип первого слова: 
+        <mat-radio-button *ngFor="let typ of entry_types" [value]="typ.eng">{{typ.russ}}</mat-radio-button>
+    </mat-radio-group>
+    <p>
+        Второе слово: <input [(ngModel)]="word_2">
+    </p>
+    <mat-radio-group [(ngModel)]="lemOrTok_2">Тип второго слова: 
+        <mat-radio-button *ngFor="let typ of entry_types" [value]="typ.eng">{{typ.russ}}</mat-radio-button>
+    </mat-radio-group>
+    <p>
+        Словоформ между первым и вторым словами от <input [(ngModel)]="mini_1">
+         до <input [(ngModel)]="maxi_1">
+    </p>
+    <p>
+        Третье слово: <input [(ngModel)]="word_3">
+    </p>
+    <mat-radio-group [(ngModel)]="lemOrTok_3">Тип третьего слова: 
+        <mat-radio-button *ngFor="let typ of entry_types" [value]="typ.eng">
+            {{typ.russ}}</mat-radio-button>
+    </mat-radio-group>
+    <p>
+        Словоформ между вторым и третьим словами от <input [(ngModel)]="mini_2">
+         до <input [(ngModel)]="maxi_2">
+    </p>
+</div>
+<div *ngIf="n_gram == '4'">
+    <p>
+        Первое слово: <input [(ngModel)]="word_1">
+    </p>
+    <mat-radio-group [(ngModel)]="lemOrTok_1">Тип первого слова: 
+        <mat-radio-button *ngFor="let typ of entry_types" [value]="typ.eng">
+            {{typ.russ}}</mat-radio-button>
+    </mat-radio-group>
+    <p>
+        Второе слово: <input [(ngModel)]="word_2">
+    </p>
+    <mat-radio-group [(ngModel)]="lemOrTok_2">Тип второго слова: 
+        <mat-radio-button *ngFor="let typ of entry_types" [value]="typ.eng">
+            {{typ.russ}}</mat-radio-button>
+    </mat-radio-group>
+    <p>
+        Словоформ между первым и вторым словами от <input [(ngModel)]="mini_1">
+         до <input [(ngModel)]="maxi_1">
+    </p>
+    <p>
+        Третье слово: <input [(ngModel)]="word_3">
+    </p>
+    <mat-radio-group [(ngModel)]="lemOrTok_3">Тип третьего слова: 
+        <mat-radio-button *ngFor="let typ of entry_types" [value]="typ.eng">
+            {{typ.russ}}</mat-radio-button>
+    </mat-radio-group>
+    <p>
+        Словоформ между вторым и третьим словами от <input [(ngModel)]="mini_2">
+         до <input [(ngModel)]="maxi_2">
+    </p>
+    <p>
+        Четвертое слово: <input [(ngModel)]="word_4">
+    </p>
+    <mat-radio-group [(ngModel)]="lemOrTok_4">Тип четвертого слова: 
+        <mat-radio-button *ngFor="let typ of entry_types" [value]="typ.eng">
+            {{typ.russ}}</mat-radio-button>
+    </mat-radio-group>
+    <p>
+        Словоформ между третьим и четвертым словами от <input [(ngModel)]="mini_3">
+         до <input [(ngModel)]="maxi_3">
+    </p>
+</div>
+<div *ngIf="n_gram == '2'">
+    <button mat-button
+    [disabled]="!check()"
+     (click)="find_colls(DBname,word_1,word_2,mini_1,maxi_1,lemOrTok_1,lemOrTok_2)">Искать</button>
+</div>
+<div *ngIf="n_gram == '3'">
+    <button mat-button
+    [disabled]="!check()"
+     (click)="find_colls_tri(DBname,word_1,word_2,word_3,mini_1,maxi_1,mini_2,maxi_2,lemOrTok_1,lemOrTok_2,lemOrTok_3)">Искать</button>
+</div>
+<div *ngIf="n_gram == '4'">
+    <button mat-button
+    [disabled]="!check()"
+     (click)="find_colls_quad(DBname,word_1,word_2,word_3,word_4,mini_1,maxi_1,mini_2,maxi_2,mini_3,maxi_3,
+    lemOrTok_1,lemOrTok_2,lemOrTok_3,lemOrTok_4)" class="upload-btn">Искать</button>
+</div>
+
+<div *ngIf="postData">
+    <div *ngIf="posted.error=='1'"><b>НЕКОРРЕКТНЫЕ ДАННЫЕ. ПРОВЕРЬТЕ ЗАПОЛНЕНИЕ ПОЛЕЙ!</b></div>
+    <div *ngIf="posted.error=='0'">
+        Введите название конкорданса для скачивания: <input [(ngModel)]="CollDownName" (input)="wordtrig()"><br>
+        <button mat-button (click)="prep_coll()" type="pseudo_button_1" [disabled]="!checkwordtrig()">
+            Скачать конкорданс</button>
+            <a mat-button *ngIf="postcoll" [href]="fileUrl" (click)="down_coll()" download="{{postcoll.name}}.docx">Загрузить файл на компьютер</a>
+            <br>
+        <p><b>Словоформ в базе: {{posted.cardinality}}</b></p>
+        <p><b>Всего примеров: {{posted.howmuch}}</b></p>
+        <mat-divider></mat-divider>
+        <div *ngFor="let entry of posted.result">
+            <mat-card class="inhalt">
+                <mat-card-content>
+                    <b>Пример:</b>
+                    <p>{{entry.raw}}</p> 
+                    <b>Источник:</b>
+                    <p>{{entry.file}}, предложение №{{entry.sentnum}}</p>
+                    <button mat-button (click)="broader_context(DBname,entry.file, entry.sentnum)" class="small_button">Расширить контекст</button>
+                    <div *ngIf="broad && this.act_file == entry.file && this.act_sentnum == entry.sentnum">
+                        <button mat-button (click)="closeBroader()" class="small_button">Свернуть</button>
+                        <mat-card>
+                            <mat-card-content>
+                                <p><b>Расширенный контекст: </b></p>
+                                {{broad.broadened}}
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+</div>

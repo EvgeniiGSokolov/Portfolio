@@ -1,0 +1,70 @@
+<div>
+  <mat-progress-bar *ngIf="!check()" mode='indeterminate'></mat-progress-bar>
+</div>
+
+<br> 
+<p><b>Выбрать базу данных:</b></p>
+<mat-chip-listbox>
+    <mat-chip-option *ngFor="let name of Modelnames" (click)="Modelname = name; trigger()">{{name}}</mat-chip-option>
+</mat-chip-listbox>
+
+<div class="file-upload">
+
+    <p><b>Введите слово: </b><input [(ngModel)]="word"></p>
+    <mat-radio-group [(ngModel)]="POS"><b>Часть речи:</b>
+        <mat-radio-button *ngFor="let tag of postags"
+        [value]="tag.short">
+        {{tag.russ}}
+        </mat-radio-button>
+
+    </mat-radio-group>
+    <br>
+    <mat-radio-group [(ngModel)]="samepos"><b>Искать только слова той же части речи:</b>
+        <mat-radio-button *ngFor="let one of samepostags" [value]="one.val">
+            {{one.text}}
+        </mat-radio-button>
+    </mat-radio-group>
+    <br>
+    <button mat-button color="primary" class="upload-btn" [disabled]="!check()"
+        (click)="compare_words()"> Найти ближайшие слова
+    </button>
+</div>
+
+<br>
+
+<div *ngIf="posted">
+    <div>
+        <b class="announcer">Ближайшие слова:</b><br>
+        <div *ngFor="let entry of posted.body">
+            <mat-card>
+                <mat-card-header>
+                    <button mat-button (click)="find_da_refs(entry.wordform);" class="pseudo_button">
+                    {{entry.wordform}}, {{entry.cosine}}</button>
+                </mat-card-header>
+                <mat-card-content *ngIf="this.postref==this.inhalt && this.act_wordform==this.entry.wordform;">
+                    <ul>
+                        <button (click)="nullify();" class="small_button_1">Скрыть</button>
+                        <li *ngFor="let elt of postref.result" class="inhalt">
+                            <p><b>Пример:</b></p>
+                            <p>{{elt.raw}}</p>
+                            <b>Источник:</b>
+                            <p>{{elt.file}}, предложение №{{elt.sentnum}}</p>
+                            <mat-divider></mat-divider>
+                            <button mat-button (click)="broado_context(elt.file, elt.sentnum)" class="small_button">
+                                Расширить контекст</button>
+                                <div *ngIf="broadd && this.act_file == elt.file && this.act_sentnum == elt.sentnum">
+                                    <button mat-button (click)="closeBroader()" class="small_button_1">Свернуть</button>
+                                    <mat-card>
+                                        <mat-card-content>
+                                            <p><b>Расширенный контекст: </b></p>
+                                            {{broadd.broadened}}
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </li>
+                    </ul>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

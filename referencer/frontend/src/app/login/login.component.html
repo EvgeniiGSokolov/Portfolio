@@ -1,0 +1,20 @@
+<div *ngIf="userData!='invalid'">
+    Вход состоялся!
+    {{userData.idToken}}
+</div>
+<div *ngIf="userData=='invalid'">
+    Такого пользователя не существует!
+</div>
+<div>
+    <table>
+        <tr>
+          <td><h3 class="register">полное имя:</h3></td>
+          <td><input matInput [(ngModel)]="fullname" (input)="full_trigger()"></td>
+          <td><h3 class="register">логин:</h3></td>
+          <td><input matInput [(ngModel)]="login" (input)="log_trigger()"></td>
+          <td><h3 class="register">пароль:</h3></td>
+          <td><input [(ngModel)]="password" (input)="pass_trigger()"></td>
+        </tr>
+      </table>
+      <button mat-button (click)="send_userdata(fullname,login,password)">Создать</button>
+</div>

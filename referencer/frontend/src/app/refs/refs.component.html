@@ -1,0 +1,62 @@
+<div>
+    <mat-progress-bar *ngIf="!check()" mode='indeterminate'></mat-progress-bar>
+  </div>
+<h3>ПОИСК ПО СЛОВУ</h3>
+<div>
+    <p><b>Выбрать базу данных:</b></p>
+<mat-chip-listbox [(ngModel)]="DBname">
+    <mat-chip-option *ngFor="let name of DBnames.collection_names" [value]="name.name" (click)="DBname = name.name">{{name.name}}</mat-chip-option>
+</mat-chip-listbox>
+</div>
+<div>
+    <p>
+        Поиск по слову: <input [(ngModel)]="word">
+    </p>
+    <p>
+        <mat-radio-group [(ngModel)]="lemOrTok">Тип слова: 
+            <mat-radio-button *ngFor="let type of entry_types" [value]="type.eng">{{type.russ}}</mat-radio-button>
+        </mat-radio-group>
+
+    </p>
+</div>
+<div>
+    <button mat-button [disabled]="!check()" (click)="find_refs(lemOrTok,word,DBname);this.broadc=null;" class="upload-btn"> 
+        Искать</button>
+</div>
+    <br>
+<div *ngIf="postData">
+    <div *ngIf="posted.error=='1'"><b>НЕКОРРЕКТНЫЕ ДАННЫЕ. ПРОВЕРЬТЕ ЗАПОЛНЕНИЕ ПОЛЕЙ!</b></div>
+    <div *ngIf="posted.error=='0'">
+        Введите название файла для скачивания: <input [(ngModel)]="ConcDownName" (input)="wordtrig()"><br>
+        <button mat-button (click)="prep_wordlist()" type="pseudo_button_1" [disabled]="!checkwordtrig()">
+            Скачать результат</button>
+            <a mat-button *ngIf="postref" [href]="fileUrl" (click)="down_wordlist()" download="{{postref.name}}.docx">Загрузить файл на компьютер</a>
+        
+        <p><b>Словоформ в базе: {{posted.cardinality}}</b></p>
+        <p><b>Всего примеров: {{posted.howmuch}}</b></p>
+        <p><b>Единиц на миллион: {{posted.ipm}}</b></p>
+        <mat-divider></mat-divider>
+        <div *ngFor="let entry of posted.result">
+            <mat-card class="inhalt">
+                <mat-card-content>
+                            <b>Пример:</b>
+                            <p>{{entry.raw}}</p> 
+                            <b>Источник:</b>
+                            <p>{{entry.file}}, предложение №{{entry.sentnum}}</p>
+                    <button mat-button (click)="broader_context(DBname,entry.file, entry.sentnum)" class="small_button">
+                        Расширить контекст</button>
+                    <div *ngIf="broadc && this.act_file == entry.file && this.act_sentnum == entry.sentnum">
+                        <button mat-button (click)="closeBroader()" class="small_button">Свернуть</button>
+                        <mat-card>
+                            <mat-card-content>
+                                <p><b>Расширенный контекст: </b></p>
+                                {{broadc.broadened}}
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+</div>

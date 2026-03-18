@@ -1,0 +1,100 @@
+.file-input {
+    display: none;
+  }
+
+
+  .announcer {
+    font-size: 1.4rem;
+    font-family: 'Times New Roman';
+
+  }
+  .item {
+    font-size: 1.2rem;
+    font-family: 'Times New Roman';
+  }
+
+  .inhalt {
+    background-color:azure;
+  }
+
+  .upload-btn {
+    font-family: 'Times New Roman';
+    font-size: 1.3rem;
+    background-color: #deecde;
+    min-width: 400px;
+  }
+
+  .pseudo_button {
+    min-width: 400px;
+    font-family: 'Times New Roman';
+    background-color: #ddd9eb;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: black;
+    font-size: 1.3rem;
+    padding: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  .small_button {
+    min-width: 400px;
+    font-family: 'Arial';
+    background-color: #dcdee9;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: rgb(55, 15, 134);
+    font-size: 1.2rem;
+    padding: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  .small_button_1 {
+    min-width: 400px;
+    font-family: 'Times New Roman';
+    background-color: #dcdee9;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: rgb(16, 15, 16);
+    font-size: 1.2rem;
+    padding: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  button {
+    min-width: 500px;
+    font-family: 'Arial';
+    background-color: #dcdee9;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: black;
+    font-size: 1.5rem;
+    padding: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  .deleting {
+    min-width: 400px;
+    font-family: 'Times New Roman';
+    background-color: #e01717;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: rgb(235, 219, 219);
+    font-size: 1.3rem;
+    padding: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }

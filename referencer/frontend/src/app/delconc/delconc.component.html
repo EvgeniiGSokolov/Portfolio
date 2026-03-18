@@ -1,0 +1,24 @@
+<div>
+    <mat-progress-bar *ngIf="!check()" mode='indeterminate'></mat-progress-bar>
+  </div>
+<h3>Удаление готового конкорданса</h3>
+<div *ngIf="ConcName==null">
+    <mat-chip-listbox>
+        <mat-chip-option *ngFor="let name of ConcNames.concordances" [value]="name.name"
+        (click)="ConcName = name.name">{{name.name}}</mat-chip-option>
+    </mat-chip-listbox>
+</div>
+<div *ngIf="ConcName">
+    Для удаления выбран конкорданс <b><i>{{ConcName}}</i></b>
+<br>
+    <button mat-button (click)="getridof_it(ConcName)" class="upload-btn">Удалить конкорданс</button>
+</div>
+<div *ngIf="poster">
+        <br>
+    <mat-divider></mat-divider>
+    <div>
+        <div *ngIf="deltconc">
+            <b>Удалён конкорданс {{deltconc.deletion_alert}}</b>
+        </div>
+    </div>
+</div>

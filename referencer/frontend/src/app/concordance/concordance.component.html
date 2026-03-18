@@ -1,0 +1,94 @@
+<div>
+    <mat-progress-bar *ngIf="!check()" mode='indeterminate'></mat-progress-bar>
+  </div>
+<h3>Составление конкорданса</h3>
+<div>
+    <p><b>Выбрать базу данных:</b></p>
+    <mat-chip-listbox [(ngModel)]="DBname">
+        <mat-chip-option *ngFor="let name of DBnames.collection_names" [value]="name.name" (click)="DBname = name.name">{{name.name}}</mat-chip-option>
+    </mat-chip-listbox>
+</div>
+<div>
+    <mat-radio-group [(ngModel)]="ConcType"><b>Выберите тип конкорданса</b>
+    <mat-radio-button *ngFor="let elt of conctypes" [value]="elt.eng">
+        {{elt.russ}}
+    </mat-radio-button></mat-radio-group>
+</div>
+<br>
+<div>
+    <p>
+        Верхняя граница отрезка: <input [(ngModel)]="upper">
+    </p>
+    <p>
+        Нижняя граница отрезка: <input [(ngModel)]="lower">
+    </p>
+</div>
+<div>
+    <mat-radio-group [(ngModel)]="POS">Выберите часть речи
+        <mat-radio-button *ngFor="let tag of postags"
+        [value]="tag.short">
+        {{tag.russ}}
+        </mat-radio-button>
+    </mat-radio-group>
+</div>
+
+<div>
+    <button mat-button
+    [disabled]="!check()"
+    (click)="concordate(DBname,ConcType,upper,lower)">Искать</button>
+</div>
+
+<div *ngIf="postIt">
+    <mat-divider></mat-divider>
+    <div *ngIf="postconc.error=='1'">
+        <b>НЕКОРРЕКТНЫЕ ДАННЫЕ. ПРОВЕРЬТЕ ЗАПОЛНЕНИЕ ПОЛЕЙ!</b>
+    </div>
+    <div *ngIf="postconc.error=='0'">
+        Введите название конкорданса для сохранения: <input [(ngModel)]="ConcName" (input)="conctrig()"><br>
+        <button mat-button (click)="save_concordance(DBname,ConcName,postconc.content)" type="pseudo_button_1" [disabled]="!checktrig()">
+            Сохранить конкорданс</button>
+        <br>
+        <mat-divider></mat-divider>
+        Введите название конкорданса для скачивания: <input [(ngModel)]="ConcDownName" (input)="concdowntrig()"><br>
+        <button mat-button (click)="prep_concordance(DBname,ConcDownName,postconc.content)" type="pseudo_button_1" [disabled]="!checkdowntrig()">
+            Скачать конкорданс</button>
+            <br>
+            <mat-divider></mat-divider>
+            <p><b>Словоформ в базе: {{postconc.cardinality}}</b></p>
+            <br>
+            <a mat-button *ngIf="postdown" [href]="fileUrl" (click)="down_concordance()" download="{{postdown.name}}.docx">Загрузить файл на компьютер</a>
+        <div *ngFor="let entry of postconc.content">
+            <mat-card>
+                <mat-card-header>
+                <button mat-button (click)="reactButton(entry)">{{entry.header}}</button>
+                </mat-card-header>
+                <mat-card-content *ngIf="entry.contents == this.contents" class="inhalt">
+                    <button mat-button (click)="closeButton(entry)">Свернуть</button>
+                    <br>
+                    <p><b>Абсолютная частота: {{entry.frequency}}</b></p>
+                    <p><b>Единиц на миллион: {{entry.ipm}}</b></p>
+                    <ul>
+                        <li *ngFor="let elt of entry.contents">
+                            <b>Пример:</b>
+                            <p>{{elt.raw}}</p>
+                            <b>Источник:</b>
+                            <p>{{elt.file}}, предложение №{{elt.sentnum}}</p>
+                            <button mat-button (click)="broader_context(DBname,elt.file, elt.sentnum)" class="small_button">Расширить контекст</button>
+                            <div *ngIf="broadcont && this.act_file == elt.file && this.act_sentnum == elt.sentnum">
+                                <button mat-button (click)="closeBroader()" class="small_button">Свернуть</button>
+                                <mat-card>
+                                    <mat-card-content>
+                                        <p><b>Расширенный контекст: </b></p>
+                                        {{broadcont.broadened}}
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        <mat-divider></mat-divider><br>
+                        </li>
+                    </ul>
+                </mat-card-content>
+            </mat-card>
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+</div>

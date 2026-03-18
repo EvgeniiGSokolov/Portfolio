@@ -1,0 +1,64 @@
+<div>
+  <mat-progress-bar *ngIf="!check()" mode='indeterminate'></mat-progress-bar>
+</div>
+
+<br> 
+<p><b>Выбрать базу данных:</b></p>
+    <mat-chip-listbox [(ngModel)]="DBname">
+        <mat-chip-option *ngFor="let name of DBnames.collection_names" [value]="name.name" (click)="DBname = name.name">{{name.name}}</mat-chip-option>
+    </mat-chip-listbox>
+
+<div class="file-upload">
+
+<table>
+    <tr>
+        <td><b>Имя модели:</b></td>
+        <td><input [(ngModel)]="vecmodelname"></td>
+    </tr>
+    <tr>
+        <td><b>Размер вектора:</b></td>
+        <td><input [(ngModel)]="vecsize"></td>
+    </tr>
+    <tr>
+        <td><b>Размер окна:</b></td>
+        <td><input [(ngModel)]="winsize"></td>
+    </tr>
+    <tr>
+        <td><b>Порог частоты слов:</b></td>
+        <td><input [(ngModel)]="mincount"></td>
+    </tr>
+    <tr>
+        <td><b>Число эпох обучения: </b></td>
+        <td><input [(ngModel)]="epochs"></td>
+    </tr>
+    <tr>
+        <td><b>Алгоритм:</b></td>
+        <td>
+            <mat-chip-listbox>
+                <mat-chip-option *ngFor="let lg of algorithm" [value]="lg.eng" (click)="alg = lg.eng">
+                    {{lg.russ}}
+                </mat-chip-option>
+            </mat-chip-listbox>
+        </td>
+
+    </tr>
+</table>
+
+
+    <button mat-button color="primary" class="upload-btn" [disabled]="!check()"
+        (click)="make_vectorbase()"> Обучить векторную модель
+    </button>
+</div>
+
+<br>
+
+<div *ngIf="posted">
+    <div *ngIf="posted.type=='db_ready'">
+        <b class="announcer">Обучена модель {{posted.modelname}} со следующими параметрами:</b><br>
+        {{posted.chars}}
+    </div> 
+    <div *ngIf="posted.type=='fail'">
+        {{posted.message}}
+    </div>     
+    </div>
+

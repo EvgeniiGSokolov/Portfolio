@@ -1,0 +1,26 @@
+<div>
+  <mat-progress-bar *ngIf="!check()" mode='indeterminate'></mat-progress-bar>
+</div>
+
+<br> 
+<p><b>Модели для удаления:</b></p>
+<mat-chip-listbox>
+    <mat-chip-option *ngFor="let name of Modelnames" (click)="Modelname = name; trigger()">{{name}}</mat-chip-option>
+</mat-chip-listbox>
+<br>
+
+<div class="file-upload">
+
+
+    <button mat-button color="primary" class="upload-btn" [disabled]="!check()"
+        (click)="delete_vecmodel()"> Удалить
+    </button>
+</div>
+
+<br>
+
+<div *ngIf="posted">
+    <div>
+{{posted.message}}
+    </div>
+</div>
