@@ -1,0 +1,1 @@
+Here a local MongoDB database must be placed.
